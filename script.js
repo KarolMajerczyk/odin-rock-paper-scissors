@@ -81,6 +81,7 @@ function playGame() {
     showRoundResult(playerSelection, computerSelection, roundResult);
   }
 
+  showScoreBoard();
   showGameWinner();
 }
 
