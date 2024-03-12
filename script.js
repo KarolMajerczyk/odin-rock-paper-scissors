@@ -1,7 +1,11 @@
+// Global variables
+
 const HAND_SIGNALS = ["rock", "paper", "scissors"];
 
 let playerPoints = 0;
 let computerPoints = 0;
+
+// Get player and computer choices
 
 function getComputerChoice() {
   const randomMove = Math.floor(Math.random() * 3);
@@ -19,17 +23,21 @@ function getPlayerChoice() {
   return playerSelection;
 }
 
-function showRoundResult(playerSelection, computerSelection, roundResult) {
+// Show text
+
+function showScoreBoard() {
   console.log(
-    `
-        Player points: ${playerPoints} - Computer points: ${computerPoints}\n
-        Player: ${playerSelection} - Computer: ${computerSelection}\n
-        ${roundResult}
-    `
+    `Player points: ${playerPoints} - Computer points: ${computerPoints}\n`
   );
 }
 
-function determineGameWinner() {
+function showRoundResult(playerSelection, computerSelection, roundResult) {
+  console.log(
+    `\nPlayer: ${playerSelection} - Computer: ${computerSelection}\n\n${roundResult}\n\n`
+  );
+}
+
+function showGameWinner() {
   let winner;
 
   if (playerPoints > computerPoints) winner = "Player wins the game!";
@@ -39,26 +47,28 @@ function determineGameWinner() {
   console.log(winner);
 }
 
+// Game logic
+
 function playRound(playerSelection, computerSelection) {
-  let resultMessage;
+  let result;
 
   if (playerSelection === computerSelection) {
     playerPoints++;
     computerPoints++;
-    resultMessage = "It's a tie.";
+    result = "It's a tie.";
   } else if (
     (playerSelection === "rock" && computerSelection === "scissors") ||
     (playerSelection === "paper" && computerSelection === "rock") ||
     (playerSelection === "scissors" && computerSelection === "paper")
   ) {
     playerPoints++;
-    resultMessage = `You won! ${playerSelection} beats ${computerSelection}`;
+    result = `You won! ${playerSelection} beats ${computerSelection}`;
   } else {
     computerPoints++;
-    resultMessage = `You lose! ${computerSelection} beats ${playerSelection}`;
+    result = `You lose! ${computerSelection} beats ${playerSelection}`;
   }
 
-  return `${resultMessage}\n\n`;
+  return result;
 }
 
 function playGame() {
@@ -66,12 +76,12 @@ function playGame() {
     const computerSelection = getComputerChoice();
     let playerSelection = getPlayerChoice();
 
+    showScoreBoard();
     const roundResult = playRound(playerSelection, computerSelection);
-
     showRoundResult(playerSelection, computerSelection, roundResult);
   }
 
-  determineGameWinner();
+  showGameWinner();
 }
 
 playGame();
