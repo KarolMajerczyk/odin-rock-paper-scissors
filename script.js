@@ -1,3 +1,9 @@
+// DOM elements
+
+const buttons = document.querySelectorAll("button");
+const result = document.querySelector("#result");
+const score = document.querySelector("#score");
+
 // Global variables
 
 const HAND_SIGNALS = ["rock", "paper", "scissors"];
@@ -5,49 +11,34 @@ const HAND_SIGNALS = ["rock", "paper", "scissors"];
 let playerPoints = 0;
 let computerPoints = 0;
 
-// Get player and computer choices
+// Event listeners
+
+for (const button of buttons) {
+  button.addEventListener("click", () => {
+    if (playerPoints !== 5 && computerPoints !== 5) {
+      const computerSelection = getComputerChoice();
+      const playerSelection = button.textContent.toLowerCase();
+
+      const roundResult = playRound(playerSelection, computerSelection);
+      showRoundResult(playerSelection, computerSelection, roundResult);
+
+      showScoreBoard();
+    } else {
+      result.textContent = showGameWinner();
+    }
+  });
+}
+
+// Helper functions
 
 function getComputerChoice() {
   const randomMove = Math.floor(Math.random() * 3);
   return HAND_SIGNALS[randomMove];
 }
 
-function getPlayerChoice() {
-  let playerSelection = prompt("Select: ").toLowerCase();
-
-  while (!HAND_SIGNALS.includes(playerSelection)) {
-    alert("Choose between: rock, paper, scissors");
-    playerSelection = prompt("Select: ").toLowerCase();
-  }
-
-  return playerSelection;
-}
-
-// Show text
-
 function showScoreBoard() {
-  console.log(
-    `Player points: ${playerPoints} - Computer points: ${computerPoints}\n`
-  );
+  score.textContent = `Player points: ${playerPoints} - Computer points: ${computerPoints}`;
 }
-
-function showRoundResult(playerSelection, computerSelection, roundResult) {
-  console.log(
-    `\nPlayer: ${playerSelection} - Computer: ${computerSelection}\n\n${roundResult}\n\n`
-  );
-}
-
-function showGameWinner() {
-  let winner;
-
-  if (playerPoints > computerPoints) winner = "Player wins the game!";
-  else if (computerPoints > playerPoints) winner = "Computer wins the game!";
-  else winner = "It's a tie!";
-
-  console.log(winner);
-}
-
-// Game logic
 
 function playRound(playerSelection, computerSelection) {
   let result;
@@ -71,18 +62,16 @@ function playRound(playerSelection, computerSelection) {
   return result;
 }
 
-function playGame() {
-  for (let i = 0; i < 5; i++) {
-    const computerSelection = getComputerChoice();
-    let playerSelection = getPlayerChoice();
-
-    showScoreBoard();
-    const roundResult = playRound(playerSelection, computerSelection);
-    showRoundResult(playerSelection, computerSelection, roundResult);
-  }
-
-  showScoreBoard();
-  showGameWinner();
+function showRoundResult(playerSelection, computerSelection, roundResult) {
+  result.textContent = `Computer: ${computerSelection} ${roundResult}`;
 }
 
-playGame();
+function showGameWinner() {
+  let winner;
+
+  if (playerPoints > computerPoints) winner = "Player wins the game!";
+  else if (computerPoints > playerPoints) winner = "Computer wins the game!";
+  else winner = "It's a tie!";
+
+  return winner;
+}
